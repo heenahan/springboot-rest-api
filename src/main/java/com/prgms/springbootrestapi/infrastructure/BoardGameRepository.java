@@ -1,7 +1,7 @@
 package com.prgms.springbootrestapi.infrastructure;
 
-import com.prgms.reactspringbootrestapi.domain.BoardGame;
-import com.prgms.reactspringbootrestapi.domain.Category;
+import com.prgms.springbootrestapi.domain.BoardGame;
+import com.prgms.springbootrestapi.domain.Category;
 
 import java.util.List;
 import java.util.Optional;

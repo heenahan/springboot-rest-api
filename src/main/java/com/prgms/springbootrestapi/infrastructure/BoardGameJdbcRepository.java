@@ -1,9 +1,9 @@
 package com.prgms.springbootrestapi.infrastructure;
 
-import com.prgms.reactspringbootrestapi.domain.BoardGame;
-import com.prgms.reactspringbootrestapi.domain.Category;
-import com.prgms.reactspringbootrestapi.domain.Period;
-import com.prgms.reactspringbootrestapi.domain.Personnel;
+import com.prgms.springbootrestapi.domain.BoardGame;
+import com.prgms.springbootrestapi.domain.Category;
+import com.prgms.springbootrestapi.domain.Period;
+import com.prgms.springbootrestapi.domain.Personnel;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.prgms.reactspringbootrestapi.util.RepositoryUtil.biToUUID;
-import static com.prgms.reactspringbootrestapi.util.RepositoryUtil.timeStampToLocalDateTime;
+import static com.prgms.springbootrestapi.util.RepositoryUtil.biToUUID;
+import static com.prgms.springbootrestapi.util.RepositoryUtil.timeStampToLocalDateTime;
 
 @Repository
 public class BoardGameJdbcRepository implements BoardGameRepository {
