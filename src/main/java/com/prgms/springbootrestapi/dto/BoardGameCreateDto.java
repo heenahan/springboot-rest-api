@@ -1,8 +1,8 @@
 package com.prgms.springbootrestapi.dto;
 
-import com.prgms.reactspringbootrestapi.domain.BoardGame;
-import com.prgms.reactspringbootrestapi.domain.Category;
-import com.prgms.reactspringbootrestapi.domain.Personnel;
+import com.prgms.springbootrestapi.domain.BoardGame;
+import com.prgms.springbootrestapi.domain.Category;
+import com.prgms.springbootrestapi.domain.Personnel;
 
 import java.util.UUID;
 
