@@ -28,7 +28,7 @@ public class BoardGameJdbcRepository implements BoardGameRepository {
     private static final String FIND_ALL = "select * from boardgames";
     private static final String WHERE = "where";
     private static final String AND = "and";
-    private static final String ID = "boardgame_id = :id";
+    private static final String ID = "boardgame_id = UUID_TO_BIN(:id)";
     private static final String CATEGORY = "category = :category";
     private static final String BEST = "best = :best";
     private static final String UPDATE = "update boardgames set name = :name, category = :category, max = :max, min = :min, best = :best, play_time = :playTime, complexity = :complexity, description = :description " +
@@ -54,7 +54,7 @@ public class BoardGameJdbcRepository implements BoardGameRepository {
     public Optional<BoardGame> findById(UUID id) {
         String query = String.format("%s %s %s", FIND_ALL, WHERE, ID);
         try {
-            BoardGame boardGame = jdbcTemplate.queryForObject(query, Collections.singletonMap("id", id), BOARD_GAME_ROW_MAPPER);
+            BoardGame boardGame = jdbcTemplate.queryForObject(query, Collections.singletonMap("id", id.toString().getBytes()), BOARD_GAME_ROW_MAPPER);
             return Optional.ofNullable(boardGame);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -65,19 +65,21 @@ public class BoardGameJdbcRepository implements BoardGameRepository {
     public List<BoardGame> findByCateogryAndBest(Category category, int best) {
         // 동적 쿼리
         StringBuilder query = new StringBuilder(FIND_ALL);
-        if (category != Category.NONE && best > 0) {
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("category", category.getName())
+                                                                        .addValue("best", best);
+        if (category != Category.NONE || best > 0) {
             query.append(" " + WHERE);
         }
         if (category != Category.NONE) {
             query.append(" " + CATEGORY);
         }
         if (best > 0) {
-            if (category != null) {
+            if (category != Category.NONE) {
                 query.append(" " + AND);
             }
             query.append(" " + BEST);
         }
-        return jdbcTemplate.query(query.toString(), BOARD_GAME_ROW_MAPPER);
+        return jdbcTemplate.query(query.toString(), parameterSource, BOARD_GAME_ROW_MAPPER);
     }
 
     @Override
@@ -90,16 +92,17 @@ public class BoardGameJdbcRepository implements BoardGameRepository {
 
     @Override
     public void deleteOne(UUID id) {
-        int result = jdbcTemplate.update(DELETE_ONE, Collections.singletonMap("id", id));
+        int result = jdbcTemplate.update(DELETE_ONE, Collections.singletonMap("id", id.toString().getBytes()));
         if (result != 1) {
             throw new IllegalStateException("보드게임 삭제에 실패했습니다.");
         }
     }
 
     private SqlParameterSource sqlParameterSource(BoardGame boardGame) {
+        UUID id = boardGame.getId();
         Personnel personnel = boardGame.getPersonnel();
         Category category = boardGame.getCategory();
-        return new MapSqlParameterSource().addValue("id", boardGame.getId())
+        return new MapSqlParameterSource().addValue("id", id.toString().getBytes())
             .addValue("name", boardGame.getName())
             .addValue("max", personnel.max())
             .addValue("min", personnel.min())
@@ -111,7 +114,7 @@ public class BoardGameJdbcRepository implements BoardGameRepository {
     }
 
     private final static RowMapper<BoardGame> BOARD_GAME_ROW_MAPPER = (resultSet, rowNumber) -> {
-        UUID boardGameId = biToUUID(resultSet.getBytes("board_game_id"));
+        UUID boardGameId = biToUUID(resultSet.getBytes("boardgame_id"));
         String name = resultSet.getString("name");
         int max = resultSet.getInt("max");
         int min = resultSet.getInt("min");
