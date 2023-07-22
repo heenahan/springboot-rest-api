@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.*;
 class BoardGameJdbcRepositoryTest {
     
     @Autowired
-    BoardGameRepository boardGameRepository;
+    private BoardGameRepository boardGameRepository;
 
     @Test
     @DisplayName("보드게임을 저장한다")

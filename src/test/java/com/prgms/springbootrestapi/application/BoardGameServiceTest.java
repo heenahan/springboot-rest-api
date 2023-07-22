@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.*;
 class BoardGameServiceTest {
 
     @Autowired
-    BoardGameService boardGameService;
+    private BoardGameService boardGameService;
 
     @Test
     @DisplayName("보드게임 저장 후 아이디로 조회하여 확인한다.")
