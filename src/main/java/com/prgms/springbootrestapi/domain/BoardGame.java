@@ -1,6 +1,5 @@
 package com.prgms.springbootrestapi.domain;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class BoardGame {

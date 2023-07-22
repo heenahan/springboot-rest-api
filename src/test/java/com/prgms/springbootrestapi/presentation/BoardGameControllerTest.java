@@ -3,7 +3,6 @@ package com.prgms.springbootrestapi.presentation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prgms.springbootrestapi.application.BoardGameService;
 import com.prgms.springbootrestapi.dto.BoardGameCreateDto;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
