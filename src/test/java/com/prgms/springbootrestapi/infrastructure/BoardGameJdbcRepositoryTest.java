@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@Transactional // 테스트 후 롤백
 class BoardGameJdbcRepositoryTest {
     
     @Autowired
@@ -27,7 +28,6 @@ class BoardGameJdbcRepositoryTest {
 
     @Test
     @DisplayName("보드게임을 저장한다")
-    @Transactional // 테스트 후 롤백
     void 보드게임을_저장한다() {
         // given
         Category category = Category.FAMILY;
@@ -50,7 +50,6 @@ class BoardGameJdbcRepositoryTest {
     @ParameterizedTest
     @MethodSource("filterAndResult")
     @DisplayName("카테고리와 추천인원을 기준으로 필터링하여 조회한다.")
-    @Transactional
     void 보드게임에서_필터_조회한다(String categoryName, int best, int size, List<Category> categories, List<Integer> numbers) {
         // given
         Category category = Category.of(categoryName);
@@ -71,7 +70,6 @@ class BoardGameJdbcRepositoryTest {
 
     @Test
     @DisplayName("보드게임을 수정한다.")
-    @Transactional
     void 보드게임을_수정한다() {
         // given
         Category category = Category.FAMILY;
@@ -94,7 +92,6 @@ class BoardGameJdbcRepositoryTest {
 
     @Test
     @DisplayName("보드게임을 삭제한다.")
-    @Transactional
     void 보드게임을_삭제한다() {
         // given
         Category category = Category.FAMILY;
@@ -103,7 +100,7 @@ class BoardGameJdbcRepositoryTest {
         boardGameRepository.save(boardGame);
 
         // when
-        boardGameRepository.deleteOne(boardGame.getId());
+        boardGameRepository.deleteOne(boardGame);
 
         // then
         Optional<BoardGame> deleteBoardGame = boardGameRepository.findById(boardGame.getId());
