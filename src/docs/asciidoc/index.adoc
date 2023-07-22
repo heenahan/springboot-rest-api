@@ -1,0 +1,33 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= Geek REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[BoardGame-API]]
+== BoardGame API
+
+[[BoardGame-Create]]
+== 신규 보드게임 등록
+==== Http Request
+include::{snippets}/board-game-create/http-request.adoc[]
+
+include::{snippets}/board-game-create/request-fields.adoc[]
+==== Http Response
+include::{snippets}/board-game-create/http-response.adoc[]
+
+[[BoardGame-Find-One]]
+== 아이디를 통해 보드게임 조회
+==== Http Request
+include::{snippets}/board-game-find-one/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/board-game-find-one/path-parameters.adoc[]
+
+==== Http Response
+include::{snippets}/board-game-find-one/http-response.adoc[]
