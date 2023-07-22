@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/boardgame/")
+@RequestMapping("/api/boardgame")
 public class BoardGameController {
 
     private final BoardGameService boardGameService;
@@ -30,36 +33,38 @@ public class BoardGameController {
         this.boardGameService = boardGameService;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<String> create(BoardGameCreateDto boardGameCreateDto) {
+    public void create(@RequestBody @Valid BoardGameCreateDto boardGameCreateDto) {
         boardGameService.create(UUID.randomUUID(), boardGameCreateDto);
-        return new ResponseEntity<>("저장에 성공했습니다.", HttpStatus.CREATED);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public ResponseEntity<BoardGameDto> findDetail(@PathVariable UUID id) {
+    public ResponseDto<BoardGameDto> findDetail(@PathVariable UUID id) {
         BoardGameDto boardGame = boardGameService.findOne(id);
-        return new ResponseEntity<>(boardGame, HttpStatus.OK);
+        return ResponseDto.of(HttpStatus.OK, "보드게임 조회에 성공했습니다.", boardGame);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<ResponseDto> search(@RequestParam(defaultValue = "none") String category,
+    public ResponseDto<List<BoardGameDto>> search(@RequestParam(defaultValue = "none") String category,
                                               @RequestParam(defaultValue = "0") int best) {
         BoardGameSearchDto boardGameSearchDto = new BoardGameSearchDto(category, best);
         List<BoardGameDto> boardGames = boardGameService.search(boardGameSearchDto);
-        return new ResponseEntity<>(new ResponseDto(boardGames), HttpStatus.OK);
+        return ResponseDto.of(HttpStatus.OK, "보드게임 조회에 성공했습니다.", boardGames);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable UUID id, BoardGameUpdateDto boardGameUpdateDto) {
+    public void update(@PathVariable UUID id, @RequestBody @Valid BoardGameUpdateDto boardGameUpdateDto) {
         boardGameService.update(id, boardGameUpdateDto);
-        return new ResponseEntity<>("수정에 성공했습니다.", HttpStatus.NO_CONTENT);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteOne(@PathVariable UUID id) {
+    public void deleteOne(@PathVariable UUID id) {
         boardGameService.deleteOne(id);
-        return new ResponseEntity<>("삭제에 성공했습니다.", HttpStatus.NO_CONTENT);
     }
 
 }
