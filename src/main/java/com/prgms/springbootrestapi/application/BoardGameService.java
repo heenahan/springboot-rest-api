@@ -26,8 +26,8 @@ public class BoardGameService {
     }
 
     @Transactional
-    public void create(BoardGameCreateDto boardGameCreateDto) {
-        BoardGame boardGame = boardGameCreateDto.toEntity();
+    public void create(UUID boardGameId, BoardGameCreateDto boardGameCreateDto) {
+        BoardGame boardGame = boardGameCreateDto.toEntity(boardGameId);
         boardGameRepository.save(boardGame);
     }
 
@@ -59,7 +59,9 @@ public class BoardGameService {
 
     @Transactional
     public void deleteOne(UUID id) {
-        boardGameRepository.deleteOne(id);
+        Optional<BoardGame> boardGameOfOptional = boardGameRepository.findById(id);
+        BoardGame boardGame = boardGameOfOptional.orElseThrow(() -> new IllegalStateException("존재하지 않는 보드게임입니다."));
+        boardGameRepository.deleteOne(boardGame);
     }
 
 }

@@ -32,7 +32,7 @@ public class BoardGameController {
 
     @PostMapping
     public ResponseEntity<String> create(BoardGameCreateDto boardGameCreateDto) {
-        boardGameService.create(boardGameCreateDto);
+        boardGameService.create(UUID.randomUUID(), boardGameCreateDto);
         return new ResponseEntity<>("저장에 성공했습니다.", HttpStatus.CREATED);
     }
 

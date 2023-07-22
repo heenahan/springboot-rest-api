@@ -14,6 +14,6 @@ public interface BoardGameRepository {
     Optional<BoardGame> findById(UUID id);
     List<BoardGame> findByCateogryAndBest(Category category, int best);
     void update(BoardGame boardGame);
-    void deleteOne(UUID id);
+    void deleteOne(BoardGame boardGame);
 
 }

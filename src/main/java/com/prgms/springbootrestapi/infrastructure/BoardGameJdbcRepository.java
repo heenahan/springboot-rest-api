@@ -91,8 +91,9 @@ public class BoardGameJdbcRepository implements BoardGameRepository {
     }
 
     @Override
-    public void deleteOne(UUID id) {
-        int result = jdbcTemplate.update(DELETE_ONE, Collections.singletonMap("id", id.toString().getBytes()));
+    public void deleteOne(BoardGame boardGame) {
+        UUID boardGameId = boardGame.getId();
+        int result = jdbcTemplate.update(DELETE_ONE, Collections.singletonMap("id", boardGameId.toString().getBytes()));
         if (result != 1) {
             throw new IllegalStateException("보드게임 삭제에 실패했습니다.");
         }

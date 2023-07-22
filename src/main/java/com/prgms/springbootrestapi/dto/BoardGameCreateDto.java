@@ -17,10 +17,10 @@ public record BoardGameCreateDto(
     String description
 ) {
 
-    public BoardGame toEntity() {
+    public BoardGame toEntity(UUID id) {
         Personnel personnel = new Personnel(max, min, best);
         Category categoryOfValue = Category.of(category);
-        return new BoardGame(UUID.randomUUID(), name, personnel, categoryOfValue, playTime, complexity, description);
+        return new BoardGame(id, name, personnel, categoryOfValue, playTime, complexity, description);
     }
 
 }
